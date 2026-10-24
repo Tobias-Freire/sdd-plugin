@@ -1,39 +1,39 @@
 # sdd-plugin
 
-Plugin pessoal para o Claude Code com skills e contextos que guiam o agente em tarefas recorrentes.
+Personal Claude Code plugin with skills and context that guide the agent through recurring tasks.
 
-## Estrutura
+## Structure
 
 ```
 sdd-plugin/
 ├── .claude-plugin/
-│   ├── plugin.json         # manifesto do plugin
-│   └── marketplace.json    # permite instalar o repositório como marketplace
+│   ├── plugin.json         # plugin manifest
+│   └── marketplace.json    # lets the repository be installed as a marketplace
 ├── skills/
 │   └── commit/
-│       └── SKILL.md        # skill /commit
+│       └── SKILL.md        # /commit skill
 └── README.md
 ```
 
-Quando fizer sentido, adicione também `agents/` (subagentes) e `references/` (material de apoio compartilhado entre skills).
+When it makes sense, also add `agents/` (subagents) and `references/` (supporting material shared between skills).
 
-## Instalação
+## Installation
 
-Direto do GitHub:
+Directly from GitHub:
 
 ```
 /plugin marketplace add Tobias-Freire/sdd-plugin
 /plugin install sdd@sdd-marketplace
 ```
 
-Ou a partir de um clone local:
+Or from a local clone:
 
 ```
-/plugin marketplace add /caminho/para/sdd-plugin
+/plugin marketplace add /path/to/sdd-plugin
 /plugin install sdd@sdd-marketplace
 ```
 
-Para atualizar depois de novas mudanças:
+To update after new changes:
 
 ```
 /plugin marketplace update sdd-marketplace
@@ -43,20 +43,20 @@ Para atualizar depois de novas mudanças:
 
 ### `/commit`
 
-Cria commits atômicos no padrão Conventional Commits a partir das mudanças feitas na sessão atual.
+Creates atomic commits following Conventional Commits from the changes made in the current session.
 
-- Arquivos de partes diferentes da tarefa vão para commits separados.
-- Arquivos modificados que não pertencem à sessão atual não são commitados, a menos que o chamado peça explicitamente para commitar tudo (`--all` ou texto equivalente).
-- Por padrão: mensagem em inglês, somente a linha de assunto, sem corpo e sem coautoria de IA.
+- Files from different parts of the task go into separate commits.
+- Modified files that do not belong to the current session are not committed, unless the request explicitly asks to commit everything (`--all` or equivalent text).
+- By default: English message, subject line only, no body and no AI co-authorship.
 
-| Argumento | Efeito |
-|-----------|--------|
-| `--with-body` | Adiciona mensagem de corpo ao commit. |
-| `--with-ai` | Adiciona corpo e coautoria de IA (`Co-Authored-By`). |
-| `--pt-br` | Escreve a mensagem em português brasileiro. |
-| `--all` | Inclui também as mudanças pendentes que não são da sessão. |
+| Argument | Effect |
+|----------|--------|
+| `--with-body` | Adds a body to the commit message. |
+| `--with-ai` | Adds a body and AI co-authorship (`Co-Authored-By`). |
+| `--pt-br` | Writes the message in Brazilian Portuguese. |
+| `--all` | Also includes pending changes that are not from the session. |
 
-Os argumentos podem ser combinados:
+Arguments can be combined:
 
 ```
 /commit
@@ -65,4 +65,4 @@ Os argumentos podem ser combinados:
 /commit --with-body --pt-br
 ```
 
-> Skills de plugin ficam sob o namespace do plugin, então a forma garantida é `/sdd:commit`. Digite `/` no Claude Code para ver como ela aparece na sua instalação.
+> Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
