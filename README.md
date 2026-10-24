@@ -123,10 +123,12 @@ Executes the manual test script (`test-script.md`) on its own, using tools such 
 |----------|--------|
 | *(none)* | Runs the tests and writes `test-report.md`. |
 | `--add-to-pr` | Also posts the results as a comment on the task's open PR: first a table listing and describing the tests, then a bullet list with the result of each one and its evidence (text, images or videos). |
+| `--add-to-issue` | Same comment, posted on the task's issue instead of the PR. |
 
 ```
 /execute-tests
 /execute-tests --add-to-pr
+/execute-tests --add-to-issue
 /execute-tests rate-limiting
 ```
 

@@ -1,13 +1,13 @@
 ---
 name: execute-tests
-description: Execute a manual test script on its own using tools such as Playwright and HTTP requests, record the results in test-report.md and optionally post them as a comment on the task's open PR (--add-to-pr). Use when the user invokes /execute-tests or asks to run the manual test script.
+description: Execute a manual test script on its own using tools such as Playwright and HTTP requests, record the results in test-report.md and optionally post them as a comment on the task's open PR (--add-to-pr) or issue (--add-to-issue). Use when the user invokes /execute-tests or asks to run the manual test script.
 disable-model-invocation: false
-argument-hint: "[--add-to-pr] [task-slug or path to test-script.md]"
+argument-hint: "[--add-to-pr | --add-to-issue] [task-slug or path to test-script.md]"
 ---
 
 # /execute-tests
 
-Run the test cases of `test-script.md` yourself, record the outcome of each one with evidence in `test-report.md` and, when asked, post the results on the task's pull request.
+Run the test cases of `test-script.md` yourself, record the outcome of each one with evidence in `test-report.md` and, when asked, post the results on the task's pull request or issue.
 
 Arguments received: `$ARGUMENTS`
 
@@ -17,6 +17,9 @@ Arguments received: `$ARGUMENTS`
 |------|--------|
 | *(none)* | Run the tests and write `test-report.md`. |
 | `--add-to-pr` | After writing the report, post the results as a comment on the open PR of this task (see step 6). |
+| `--add-to-issue` | Same, but post the comment on the issue of this task instead of the PR (see step 6). |
+
+If both flags are given, post on the PR and on the issue.
 
 Any other text is a task slug or a path to the script.
 
@@ -84,20 +87,23 @@ Always write the results to `test-report.md`, overwriting a previous report of t
 
 Keep every test of the script in both lists, in script order.
 
-## 6. Post on the PR (`--add-to-pr`)
+## 6. Post on the PR or issue (`--add-to-pr`, `--add-to-issue`)
 
-Only when the flag is present:
+Only when a flag is present:
 
-1. Find the open PR of the task: a PR number in `HANDOFF.md` or the arguments, otherwise `gh pr list --head <current-branch> --state open --json number,url`. If `gh` is unavailable or there is no open PR for this task, say so, keep the report and stop. Never create a PR from here; suggest `/pr`.
+1. Find the target:
+   - **PR** (`--add-to-pr`): a PR number in `HANDOFF.md` or the arguments, otherwise `gh pr list --head <current-branch> --state open --json number,url`. If there is no open PR for this task, say so, keep the report and stop. Never create a PR from here; suggest `/pr`.
+   - **Issue** (`--add-to-issue`): an issue number in `HANDOFF.md`, the arguments or `.sdd/<task-slug>/`, otherwise the one referenced by the open PR (`closingIssuesReferences`). If there is none, say so, keep the report and stop. Never create an issue from here; suggest `/issue`.
+   - If `gh` is unavailable or unauthenticated, tell the user and stop.
 2. Build the comment from `test-report.md`. The order is mandatory:
    1. A heading, the totals and a **table** listing the tests and describing them (ID, test, description, result).
    2. A **bullet list** with the result of each test. Each bullet may include evidence: text in code blocks, and images or videos for visual evidence.
 3. **Visual evidence**: GitHub cannot receive attachments through `gh`. Ask the user how to handle images and videos before publishing anything, and offer:
-   - Push the files to a dedicated evidence branch (for example `test-evidence/pr-<number>`, never the working branch) and reference them by URL in the comment.
+   - Push the files to a dedicated evidence branch (for example `test-evidence/<task-slug>`, never the working branch) and reference them by URL in the comment.
    - Leave a note with the local path in the bullet, so the user can drag the files into the comment manually.
    Without an answer, use textual evidence only. Review every screenshot and video for secrets, tokens and personal data before publishing, and do not publish the ones that contain them.
 4. Keep the comment under GitHub's limit of 65,000 characters. Summarize long outputs and keep the full text in `test-report.md`; split into more than one comment if needed.
-5. Post it with `gh pr comment <number> --body-file <file>`. Start the body with `<!-- sdd-test-report -->` so the comment can be recognized later.
+5. Post it with `gh pr comment <number> --body-file <file>` or `gh issue comment <number> --body-file <file>`. Start the body with `<!-- sdd-test-report -->` so the comment can be recognized later.
 
 ## 7. Safety rules
 
@@ -113,5 +119,5 @@ Reply with:
 
 - Totals: passed, failed, blocked.
 - A table of failed and blocked cases: id, what was expected, what happened, evidence.
-- The path of `test-report.md` and, if used, the URL of the PR comment.
+- The path of `test-report.md` and, if used, the URL of the PR or issue comment.
 - Suggested next steps, such as fixing the failures with `/build` or running `/review`.
