@@ -12,6 +12,7 @@ sdd-plugin/
 ├── skills/
 │   ├── build/SKILL.md           # /build skill
 │   ├── commit/SKILL.md          # /commit skill
+│   ├── docs/SKILL.md            # /docs skill
 │   ├── execute-tests/SKILL.md   # /execute-tests skill
 │   ├── generate-tests/SKILL.md  # /generate-tests skill
 │   ├── issue/SKILL.md           # /issue skill
@@ -177,6 +178,18 @@ Reviews everything that was done in a task, looking for improvements, security f
 /review rate-limiting
 /review 42
 /review --pt-br
+```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
+
+### `/docs`
+
+Creates or edits documents of any kind (process documentation, code analysis, research, article, report, guide). The type is chosen from the task. By default the document is a Markdown file in `docs/<doc-slug>.md`; pass a link (for example a Google Docs URL) or name a destination to write it there instead. In an existing external document the original formatting is preserved; in a new one, standalone elements are centered and widths kept consistent. The text is clear, detailed and concise. Not part of the main workflow sequence. Needs the matching connector authorized (for example Google Drive) for external destinations.
+
+```
+/docs process documentation for the release routine
+/docs analysis of the authentication module https://docs.google.com/document/d/<id>/edit
+/docs --pt-br research report on caching strategies, save it in notes/caching.md
 ```
 
 Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
