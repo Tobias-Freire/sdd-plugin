@@ -73,6 +73,15 @@ Generates a detailed specification (`spec.md`) for a task: goals, non-goals, tes
 /spec add rate limiting to the public API
 ```
 
+### `/plan`
+
+Breaks the specification into independent, executable parts. Generates `plan.md` (each part with goal, requirements covered, approach, tests and verification) and `todo.md` (the checklist of steps and checks for each part).
+
+```
+/plan
+/plan rate-limiting
+```
+
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
 > Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
