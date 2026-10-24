@@ -1,9 +1,9 @@
 ---
 name: commit
-description: Create atomic Conventional Commits from the changes made in the current session, leaving unrelated pending changes alone. Use when the user invokes /commit or asks to commit the work done in the session. Supports --with-body, --with-ai and --pt-br.
+description: Create atomic Conventional Commits from the changes made in the current session, leaving unrelated pending changes alone. Use when the user invokes /commit or asks to commit the work done in the session. Supports --with-body, --with-ai, --pt-br and --with-push.
 disable-model-invocation: false
-argument-hint: "[--with-body] [--with-ai] [--pt-br] [--all]"
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git add:*), Bash(git apply:*), Bash(git commit:*), Write, Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
+argument-hint: "[--with-body] [--with-ai] [--pt-br] [--all] [--with-push]"
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git add:*), Bash(git apply:*), Bash(git commit:*), Bash(git push:*), Write, Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
 # /commit
@@ -25,6 +25,7 @@ Flags can be combined in any order (e.g. `--with-body --pt-br`, `--with-ai --pt-
 | `--with-ai` | Add a body **and** the AI co-author trailer to every commit. Implies `--with-body`. |
 | `--pt-br` | Write the commit text in Brazilian Portuguese instead of English. |
 | `--all` | Also commit pending changes that do not belong to this session (see step 2). |
+| `--with-push` | Push the commits to the remote after the last commit (see step 5). |
 
 Any other text in the arguments is a free-form instruction from the user. Follow it when it does not conflict with the rules below. A request such as "commit everything pending" or "commit all files" has the same meaning as `--all`.
 
@@ -102,7 +103,7 @@ Write the description and the body in Brazilian Portuguese (for example `feat(au
 ## 5. Safety rules
 
 - Never use `--no-verify`, `--amend`, `--force` or any history rewrite.
-- Never push. Committing locally is the whole job.
+- By default, never push: committing locally is the whole job. Push only when the user passed `--with-push` or explicitly asked for it in natural language (for example "commit and push"). In that case, run a plain `git push` after the last commit succeeds (use `git push -u origin <branch>` if the branch has no upstream). Never force-push, and do not push if any commit failed.
 - If a hook fails, read the error, fix the cause when it is within the session's scope, and create a new commit. If you cannot fix it, stop and report.
 - If a commit fails, do not continue with the remaining commits blindly. Report what happened.
 
@@ -113,7 +114,7 @@ Write the description and the body in Brazilian Portuguese (for example `feat(au
 - **Read it first**, if it exists. Use it as context and verify anything critical against the files.
 - **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
 - **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
-- **For this skill**: Record the commits created (short hash and subject), the branch and the files left uncommitted. Next step: `/review`.
+- **For this skill**: Record the commits created (short hash and subject), the branch, whether they were pushed and the files left uncommitted. Next step: `/review`.
 
 ## 6. Final report
 
@@ -121,3 +122,4 @@ After the last commit, reply briefly:
 
 - The commits created (short hash and subject), in order.
 - The files left uncommitted and why (out of scope, possible secret, ambiguous).
+- Whether the commits were pushed, and to which remote branch.

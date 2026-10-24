@@ -74,6 +74,7 @@ Creates atomic commits following Conventional Commits from the changes made in t
 - Files from different parts of the task go into separate commits.
 - Modified files that do not belong to the current session are not committed, unless the request explicitly asks to commit everything (`--all` or equivalent text).
 - By default: English message, subject line only, no body and no AI co-authorship.
+- By default, nothing is pushed. The commits are pushed only with `--with-push` or when the request explicitly asks for it (for example, "commit and push").
 
 | Argument | Effect |
 |----------|--------|
@@ -81,6 +82,7 @@ Creates atomic commits following Conventional Commits from the changes made in t
 | `--with-ai` | Adds a body and AI co-authorship (`Co-Authored-By`). |
 | `--pt-br` | Writes the message in Brazilian Portuguese. |
 | `--all` | Also includes pending changes that are not from the session. |
+| `--with-push` | Pushes the commits to the remote after committing. |
 
 Arguments can be combined:
 
@@ -89,6 +91,7 @@ Arguments can be combined:
 /commit --with-body
 /commit --with-ai --pt-br
 /commit --with-body --pt-br
+/commit --with-push
 ```
 
 ### `/spec`
