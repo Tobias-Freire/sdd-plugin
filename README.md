@@ -47,6 +47,14 @@ To update after new changes:
 /plugin marketplace update sdd-marketplace
 ```
 
+Or, directly from the terminal, without opening a Claude Code session:
+
+```bash
+claude plugin marketplace update sdd-marketplace && claude plugin update sdd@sdd-marketplace
+```
+
+Restart any open Claude Code session afterwards to load the updated skills.
+
 ## Workflow
 
 The skills are meant to be used in sequence to develop a task from scratch:
