@@ -98,6 +98,15 @@ Builds the task from `spec.md`, `plan.md` and `todo.md`, one part at a time, and
 /build --all
 ```
 
+### `/generate-tests`
+
+Generates a manual test script (`test-script.md`) that covers all scenarios of a feature or task: happy paths, alternative flows, validation, boundary values, errors, security and regression. Each test case has preconditions, concrete steps and an expected result, and is mapped to the spec requirements.
+
+```
+/generate-tests
+/generate-tests rate-limiting
+```
+
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
 > Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
