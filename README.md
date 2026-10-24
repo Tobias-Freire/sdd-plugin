@@ -47,6 +47,16 @@ To update after new changes:
 /plugin marketplace update sdd-marketplace
 ```
 
+## Workflow
+
+The skills are meant to be used in sequence to develop a task from scratch:
+
+```
+/issue -> /spec -> /plan -> /build -> /commit -> /review -> /pr -> /generate-tests -> /execute-tests
+```
+
+Each skill suggests the next step when it finishes. To save context and tokens, the skills record what was done and the next steps in a `HANDOFF.md` file at the root of the repository where the task started, and read it when the next skill starts. This file is local: it is never committed (the skills add it to the repository's ignore rules if needed, and `/commit` never stages it).
+
 ## Skills
 
 ### `/commit`
