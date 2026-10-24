@@ -3,7 +3,7 @@ name: commit
 description: Create atomic Conventional Commits from the changes made in the current session, leaving unrelated pending changes alone. Use when the user invokes /commit or asks to commit the work done in the session. Supports --with-body, --with-ai and --pt-br.
 disable-model-invocation: false
 argument-hint: "[--with-body] [--with-ai] [--pt-br] [--all]"
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git add:*), Bash(git apply:*), Bash(git commit:*)
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git add:*), Bash(git apply:*), Bash(git commit:*), Write, Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
 # /commit
@@ -11,6 +11,8 @@ allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git a
 Turn the changes made **in this session** into a clean sequence of atomic commits that follow Conventional Commits.
 
 Arguments received: `$ARGUMENTS`
+
+Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 
 ## 1. Parse the arguments
 
@@ -35,6 +37,7 @@ Any other text in the arguments is a free-form instruction from the user. Follow
 5. If you cannot tell which changes belong to this session (for example, nothing was edited in this conversation), do not guess. List the pending files and ask the user which ones to commit.
 6. Never commit files that look like secrets (`.env`, private keys, credentials). Warn the user instead.
 7. Skip files ignored by `.gitignore`.
+8. Never stage or commit `HANDOFF.md`, even with `--all`. It is local context shared between skills. Make sure it is ignored (see Handoff) and leave it out of every commit.
 
 ## 3. Split into atomic commits
 
@@ -52,7 +55,7 @@ git add -- path/a path/b
 git commit -m "<subject>" -- path/a path/b
 ```
 
-Never use `git add -A`, `git add .` or `git commit -a`, except when the user asked to commit all pending files.
+Never use `git add -A`, `git add .` or `git commit -a`, except when the user asked to commit all pending files. Even then, `HANDOFF.md` must stay unstaged.
 
 ## 4. Write the message
 
@@ -102,6 +105,15 @@ Write the description and the body in Brazilian Portuguese (for example `feat(au
 - Never push. Committing locally is the whole job.
 - If a hook fails, read the error, fix the cause when it is within the session's scope, and create a new commit. If you cannot fix it, stop and report.
 - If a commit fails, do not continue with the remaining commits blindly. Report what happened.
+
+## Handoff
+
+`HANDOFF.md` lives at the root of the git repository where the task started. It carries context between skills, so the next step does not have to rediscover it. It is never committed.
+
+- **Read it first**, if it exists. Use it as context and verify anything critical against the files.
+- **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
+- **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
+- **For this skill**: Record the commits created (short hash and subject), the branch and the files left uncommitted. Next step: `/review`.
 
 ## 6. Final report
 

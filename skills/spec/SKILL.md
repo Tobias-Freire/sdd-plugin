@@ -3,7 +3,7 @@ name: spec
 description: Generate a detailed specification (spec.md) for a task before any code is written. Use when the user invokes /spec or asks to specify, scope or document a task or feature.
 disable-model-invocation: false
 argument-hint: "<task description>"
-allowed-tools: Read, Grep, Glob, Write, Bash(git log:*), Bash(git status:*), Bash(ls:*)
+allowed-tools: Read, Grep, Glob, Write, Bash(git log:*), Bash(git status:*), Bash(ls:*), Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
 # /spec
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Write, Bash(git log:*), Bash(git status:*), Bas
 Turn a task description into a detailed, unambiguous specification saved as `spec.md`. The spec says **what** must be built and **why**, not how to break the work down (that is `/plan`).
 
 Task received: `$ARGUMENTS`
+
+Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 
 ## 1. Understand the task
 
@@ -46,6 +48,15 @@ Writing rules:
 - Do not invent facts about the codebase. Read the code or mark the point as an open question.
 - Do not write implementation code. Short signatures or schemas are fine when they remove ambiguity.
 - Write in English unless the user asks otherwise.
+
+## Handoff
+
+`HANDOFF.md` lives at the root of the git repository where the task started. It carries context between skills, so the next step does not have to rediscover it. It is never committed.
+
+- **Read it first**, if it exists. Use it as context and verify anything critical against the files.
+- **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
+- **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
+- **For this skill**: Record the path of `spec.md`, a short summary of the scope, the assumptions and the open questions. Next step: `/plan`.
 
 ## 4. Final report
 

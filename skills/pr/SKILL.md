@@ -3,7 +3,7 @@ name: pr
 description: Generate the title and description of a pull request, ask the user to approve them, then open the PR on GitHub and link the related issue if there is one. Use when the user invokes /pr or asks to open a pull request.
 disable-model-invocation: false
 argument-hint: "[base-branch] [issue number]"
-allowed-tools: Read, Grep, Glob, Bash(gh pr create:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh issue view:*), Bash(gh repo view:*), Bash(gh auth status:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git branch:*), Bash(git remote:*), Bash(git rev-parse:*), Bash(git push:*)
+allowed-tools: Read, Grep, Glob, Bash(gh pr create:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh issue view:*), Bash(gh repo view:*), Bash(gh auth status:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git branch:*), Bash(git remote:*), Bash(git rev-parse:*), Bash(git push:*), Write, Edit, Bash(git check-ignore:*)
 ---
 
 # /pr
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Bash(gh pr create:*), Bash(gh pr view:*), Bash(
 Write a pull request title and description from the work on the current branch, get the user's approval, then open the PR on GitHub.
 
 Arguments received: `$ARGUMENTS`
+
+Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 
 ## 1. Check the state
 
@@ -72,6 +74,15 @@ After approval:
 
    Add `--draft` if the user chose a draft. Add `--label`, `--reviewer` or `--assignee` only if the user asked for them.
 3. If an issue is related, check that it is linked (`gh pr view --json closingIssuesReferences`). If the keyword did not link it, add a comment on the issue pointing to the PR.
+
+## Handoff
+
+`HANDOFF.md` lives at the root of the git repository where the task started. It carries context between skills, so the next step does not have to rediscover it. It is never committed.
+
+- **Read it first**, if it exists. Use it as context and verify anything critical against the files.
+- **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
+- **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
+- **For this skill**: Record the PR number, URL, base and head branches and the linked issue. Next step: `/generate-tests`.
 
 ## 6. Report
 

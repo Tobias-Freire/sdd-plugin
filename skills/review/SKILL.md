@@ -3,14 +3,16 @@ name: review
 description: Review everything that was done in a task, looking for improvements, security flaws and optimizations, and list the findings in a table with location, reason, fix and priority. Use when the user invokes /review or asks for a review of the work.
 disable-model-invocation: false
 argument-hint: "[task-slug, branch, PR number or path]"
-allowed-tools: Read, Grep, Glob, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git show:*), Bash(git branch:*), Bash(gh pr view:*), Bash(gh pr diff:*)
+allowed-tools: Read, Grep, Glob, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git show:*), Bash(git branch:*), Bash(gh pr view:*), Bash(gh pr diff:*), Write, Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
 # /review
 
-Review all the work done for a task and report what should be improved. This skill is read-only: it reports findings and does not change code.
+Review all the work done for a task and report what should be improved. This skill does not change code: it only reports findings (and updates `HANDOFF.md`).
 
 Arguments received: `$ARGUMENTS`
+
+Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 
 ## 1. Define the scope
 
@@ -56,6 +58,15 @@ Rules for the table:
   - **Low**: minor polish, naming, small optimizations.
 
 If nothing was found, say so plainly and mention what you checked.
+
+## Handoff
+
+`HANDOFF.md` lives at the root of the git repository where the task started. It carries context between skills, so the next step does not have to rediscover it. It is never committed.
+
+- **Read it first**, if it exists. Use it as context and verify anything critical against the files.
+- **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
+- **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
+- **For this skill**: Record the findings table (or a condensed version with location, priority and status), and, once the user chooses, which ones will be fixed and which were fixed (update the entry when that happens). Next step: apply the chosen fixes, then `/pr`.
 
 ## 4. After the table
 

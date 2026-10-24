@@ -144,7 +144,7 @@ Executes the manual test script (`test-script.md`) on its own, using tools such 
 
 ### `/review`
 
-Reviews everything that was done in a task, looking for improvements, security flaws, optimizations and test gaps. It first lists the findings in a table with the location, why it needs a fix, the suggested fix and a priority (Low, Medium, High or Urgent), then asks which ones to fix. It is read-only.
+Reviews everything that was done in a task, looking for improvements, security flaws, optimizations and test gaps. It first lists the findings in a table with the location, why it needs a fix, the suggested fix and a priority (Low, Medium, High or Urgent), then asks which ones to fix. It does not change code.
 
 ```
 /review

@@ -3,7 +3,7 @@ name: plan
 description: Break a specification into independent, executable parts with checks and tests for each part, producing plan.md and todo.md. Use when the user invokes /plan or asks to plan the implementation of a spec.
 disable-model-invocation: false
 argument-hint: "[task-slug or path to spec.md]"
-allowed-tools: Read, Grep, Glob, Write, Edit, Bash(git log:*), Bash(git status:*), Bash(ls:*)
+allowed-tools: Read, Grep, Glob, Write, Edit, Bash(git log:*), Bash(git status:*), Bash(ls:*), Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
 # /plan
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Write, Edit, Bash(git log:*), Bash(git status:*
 Break the specification into parts that can be built and verified one at a time. Produce two files: `plan.md` (the parts) and `todo.md` (the checklist of checks for each part).
 
 Arguments received: `$ARGUMENTS`
+
+Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 
 ## 1. Locate the spec
 
@@ -63,6 +65,15 @@ A Markdown checklist grouped by part. Each part gets its implementation steps an
 ```
 
 Checks must be concrete: an exact command, an expected output or an observable behavior. Never write checks such as "works correctly".
+
+## Handoff
+
+`HANDOFF.md` lives at the root of the git repository where the task started. It carries context between skills, so the next step does not have to rediscover it. It is never committed.
+
+- **Read it first**, if it exists. Use it as context and verify anything critical against the files.
+- **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
+- **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
+- **For this skill**: Record the paths of `plan.md` and `todo.md`, the list of parts with their one-line goals and the main risks. Next step: `/build`.
 
 ## 5. Final report
 

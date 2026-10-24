@@ -3,7 +3,7 @@ name: issue
 description: Create a GitHub issue in the task's repository with appropriate labels and a detailed description. Use when the user invokes /issue or asks to open an issue for a task, bug or feature.
 disable-model-invocation: false
 argument-hint: "<task description or task-slug>"
-allowed-tools: Read, Grep, Glob, Bash(gh issue create:*), Bash(gh issue view:*), Bash(gh issue list:*), Bash(gh label list:*), Bash(gh repo view:*), Bash(gh auth status:*), Bash(git remote:*), Bash(git status:*), Bash(git log:*)
+allowed-tools: Read, Grep, Glob, Bash(gh issue create:*), Bash(gh issue view:*), Bash(gh issue list:*), Bash(gh label list:*), Bash(gh repo view:*), Bash(gh auth status:*), Bash(git remote:*), Bash(git status:*), Bash(git log:*), Write, Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
 # /issue
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Bash(gh issue create:*), Bash(gh issue view:*),
 Create a well-written GitHub issue for a task in the repository the task belongs to.
 
 Task received: `$ARGUMENTS`
+
+Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 
 ## 1. Gather the content
 
@@ -68,6 +70,15 @@ When a spec exists, reuse its requirements and acceptance criteria instead of re
 
    Add `--assignee` or `--milestone` only if the user asked for them.
 3. Do not include secrets, tokens or private data in the issue.
+
+## Handoff
+
+`HANDOFF.md` lives at the root of the git repository where the task started. It carries context between skills, so the next step does not have to rediscover it. It is never committed.
+
+- **Read it first**, if it exists. Use it as context and verify anything critical against the files.
+- **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
+- **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
+- **For this skill**: Record the issue number and URL, its labels, a summary of the task and the task slug (`.sdd/<task-slug>/` is created by `/spec`). Next step: `/spec`.
 
 ## 6. Report
 

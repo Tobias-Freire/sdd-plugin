@@ -11,6 +11,8 @@ Implement the task described by `spec.md`, `plan.md` and `todo.md`, one part at 
 
 Arguments received: `$ARGUMENTS`
 
+Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
+
 ## 1. Parse the arguments
 
 | Flag | Effect |
@@ -72,6 +74,15 @@ Build the remaining parts in order without stopping between them. After each par
 - Do not commit or push unless the user asks. Suggest `/commit` when a part is validated.
 - Do not run destructive commands (dropping data, `rm -rf`, force operations) without explicit confirmation.
 - Never write secrets or credentials into code or logs.
+
+## Handoff
+
+`HANDOFF.md` lives at the root of the git repository where the task started. It carries context between skills, so the next step does not have to rediscover it. It is never committed.
+
+- **Read it first**, if it exists. Use it as context and verify anything critical against the files.
+- **Keep it out of git**: if `git check-ignore -q HANDOFF.md` fails, add `HANDOFF.md` to the file printed by `git rev-parse --git-path info/exclude`. Never stage or commit it, not even when everything pending is committed.
+- **Write it last**: create it if missing, otherwise update the section `## <task-slug>` (one section per task; leave other tasks untouched). Keep these parts: stage (this skill and date), done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Replace outdated content instead of appending, keep the section under about 60 lines and never write secrets.
+- **For this skill**: Record which parts are built and validated, the files changed, test results, decisions that deviate from the plan and what is blocked. Next step: `/build` for the next part, or `/commit` once a part is validated.
 
 ## 7. Final report
 
