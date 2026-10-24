@@ -22,6 +22,14 @@ To save context and tokens, every skill reads and writes `HANDOFF.md`:
 - A skill updates it last, with one section per task (`## <task-slug>`) containing: stage (skill run and date), what was done, decisions, artifacts (paths, issue and PR numbers, branch) and next steps with open questions. Outdated content is replaced, not appended, and each task section stays short (about 60 lines at most). It never contains secrets.
 - Every new skill must include the same `## Handoff` section, tailored to what it does, and keep its `allowed-tools` (when set) able to write the file and run `git check-ignore` and `git rev-parse`.
 
+## Plugin version
+
+Bump `version` in `.claude-plugin/plugin.json` whenever skills are added or changed. `claude plugin update` compares versions, so without a bump users keep the old cached copy (for example, only the first skill appears).
+
+## Language flag: `--pt-br`
+
+Every skill that generates text (files, issues, PRs, reports) accepts `--pt-br` and then writes that text in Brazilian Portuguese instead of English. Code, identifiers, file names, commands and `HANDOFF.md` stay in English. Add the flag to `argument-hint`, to the `description` and to the skill's section in `README.md`.
+
 ## Skill frontmatter: `disable-model-invocation`
 
 - Set `disable-model-invocation: false` in every new skill. This is the default: agents may invoke the skill on their own when the task calls for it.

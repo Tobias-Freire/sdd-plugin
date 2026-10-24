@@ -55,6 +55,8 @@ claude plugin marketplace update sdd-marketplace && claude plugin update sdd@sdd
 
 Restart any open Claude Code session afterwards to load the updated skills.
 
+> `plugin update` compares the `version` in `.claude-plugin/plugin.json`. If new skills do not show up after updating, check that the version was bumped; as a workaround, run `claude plugin uninstall sdd@sdd-marketplace && claude plugin install sdd@sdd-marketplace`.
+
 ## Workflow
 
 The skills are meant to be used in sequence to develop a task from scratch:
@@ -100,7 +102,10 @@ Generates a detailed specification (`spec.md`) for a task: goals, non-goals, tes
 
 ```
 /spec add rate limiting to the public API
+/spec --pt-br add rate limiting to the public API
 ```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
 
 ### `/plan`
 
@@ -109,7 +114,10 @@ Breaks the specification into independent, executable parts. Generates `plan.md`
 ```
 /plan
 /plan rate-limiting
+/plan --pt-br
 ```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
 
 ### `/build`
 
@@ -120,11 +128,13 @@ Builds the task from `spec.md`, `plan.md` and `todo.md`, one part at a time, and
 | *(none)* | Builds the next unfinished part and waits for validation. |
 | `--validate` | Runs the checks and tests of the current part. |
 | `--all` | Builds all parts and runs all checks and tests without waiting for validation between parts. |
+| `--pt-br` | Writes messages and reports in Brazilian Portuguese (code stays in English). |
 
 ```
 /build
 /build --validate
 /build --all
+/build --pt-br
 ```
 
 ### `/generate-tests`
@@ -134,7 +144,10 @@ Generates a manual test script (`test-script.md`) that covers all scenarios of a
 ```
 /generate-tests
 /generate-tests rate-limiting
+/generate-tests --pt-br
 ```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
 
 ### `/execute-tests`
 
@@ -145,12 +158,14 @@ Executes the manual test script (`test-script.md`) on its own, using tools such 
 | *(none)* | Runs the tests and writes `test-report.md`. |
 | `--add-to-pr` | Also posts the results as a comment on the task's open PR: first a table listing and describing the tests, then a bullet list with the result of each one and its evidence (text, images or videos). |
 | `--add-to-issue` | Same comment, posted on the task's issue instead of the PR. |
+| `--pt-br` | Writes the report and the comment in Brazilian Portuguese. |
 
 ```
 /execute-tests
 /execute-tests --add-to-pr
 /execute-tests --add-to-issue
 /execute-tests rate-limiting
+/execute-tests --add-to-pr --pt-br
 ```
 
 ### `/review`
@@ -161,7 +176,10 @@ Reviews everything that was done in a task, looking for improvements, security f
 /review
 /review rate-limiting
 /review 42
+/review --pt-br
 ```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
 
 ### `/issue`
 
@@ -170,7 +188,10 @@ Creates a GitHub issue in the task's repository with appropriate labels (chosen 
 ```
 /issue add rate limiting to the public API
 /issue rate-limiting
+/issue --pt-br add rate limiting to the public API
 ```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
 
 ### `/pr`
 
@@ -180,7 +201,10 @@ Generates the title and description of a pull request from the branch's commits,
 /pr
 /pr main
 /pr main 42
+/pr --pt-br
 ```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
 
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
