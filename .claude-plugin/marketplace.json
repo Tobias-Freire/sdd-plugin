@@ -1,0 +1,13 @@
+{
+  "name": "sdd-marketplace",
+  "owner": {
+    "name": "Tobias Freire"
+  },
+  "plugins": [
+    {
+      "name": "sdd",
+      "source": "./",
+      "description": "Minhas skills e contextos pessoais para guiar agentes de IA em tarefas recorrentes."
+    }
+  ]
+}

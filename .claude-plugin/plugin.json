@@ -1,0 +1,11 @@
+{
+  "name": "sdd",
+  "description": "Minhas skills e contextos pessoais para guiar agentes de IA em tarefas recorrentes.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Tobias Freire",
+    "url": "https://github.com/Tobias-Freire"
+  },
+  "repository": "https://github.com/Tobias-Freire/sdd-plugin",
+  "keywords": ["skills", "git", "commits", "workflow"]
+}
