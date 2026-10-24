@@ -1,7 +1,7 @@
 ---
 name: commit
-description: Create atomic Conventional Commits from the changes made in the current session, leaving unrelated pending changes alone. Use only when the user invokes /commit. Supports --with-body, --with-ai and --pt-br.
-disable-model-invocation: true
+description: Create atomic Conventional Commits from the changes made in the current session, leaving unrelated pending changes alone. Use when the user invokes /commit or asks to commit the work done in the session. Supports --with-body, --with-ai and --pt-br.
+disable-model-invocation: false
 argument-hint: "[--with-body] [--with-ai] [--pt-br] [--all]"
 allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git add:*), Bash(git apply:*), Bash(git commit:*)
 ---
