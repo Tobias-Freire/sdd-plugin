@@ -126,6 +126,15 @@ Reviews everything that was done in a task, looking for improvements, security f
 /review 42
 ```
 
+### `/issue`
+
+Creates a GitHub issue in the task's repository with appropriate labels (chosen from the ones that already exist) and a detailed description. It checks for duplicates first and shows the content for confirmation before creating it. Requires the GitHub CLI (`gh`) authenticated.
+
+```
+/issue add rate limiting to the public API
+/issue rate-limiting
+```
+
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
 > Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
