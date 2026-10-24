@@ -1,8 +1,8 @@
 ---
 name: build
-description: Build a task part by part from spec.md, plan.md and todo.md, waiting for user validation after each part. Supports --validate and --all. Use when the user invokes /build or asks to implement a planned task.
+description: Build a task part by part from spec.md, plan.md and todo.md, waiting for user validation after each part. Supports --validate, --all and --pt-br. Use when the user invokes /build or asks to implement a planned task.
 disable-model-invocation: false
-argument-hint: "[--validate] [--all] [task-slug]"
+argument-hint: "[--validate] [--all] [--pt-br] [task-slug]"
 ---
 
 # /build
@@ -20,6 +20,7 @@ Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 | *(none)* | Build the next unfinished part, then stop and wait for the user's validation. |
 | `--validate` | Do not build. Run the checks and tests of the current part (the last built part that is not yet validated) and report the result. |
 | `--all` | Build every remaining part and run all tests and checks, without waiting for validation between parts. |
+| `--pt-br` | Write the messages and reports to the user in Brazilian Portuguese instead of English. Code, identifiers, code comments, file names and `HANDOFF.md` stay in English. Combines with the other flags. |
 
 Any other text is a task slug or a free-form instruction. Follow it when it does not conflict with the rules below.
 

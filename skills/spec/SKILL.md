@@ -1,8 +1,8 @@
 ---
 name: spec
-description: Generate a detailed specification (spec.md) for a task before any code is written. Use when the user invokes /spec or asks to specify, scope or document a task or feature.
+description: Generate a detailed specification (spec.md) for a task before any code is written. Supports --pt-br. Use when the user invokes /spec or asks to specify, scope or document a task or feature.
 disable-model-invocation: false
-argument-hint: "<task description>"
+argument-hint: "[--pt-br] <task description>"
 allowed-tools: Read, Grep, Glob, Write, Bash(git log:*), Bash(git status:*), Bash(ls:*), Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Write, Bash(git log:*), Bash(git status:*), Bas
 Turn a task description into a detailed, unambiguous specification saved as `spec.md`. The spec says **what** must be built and **why**, not how to break the work down (that is `/plan`).
 
 Task received: `$ARGUMENTS`
+
+If the arguments contain `--pt-br`, remove the flag from them and write `spec.md` in Brazilian Portuguese instead of English (headings included). Code, identifiers, file names, commands and `HANDOFF.md` stay in their original form (English).
 
 Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 

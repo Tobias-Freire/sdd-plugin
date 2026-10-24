@@ -1,8 +1,8 @@
 ---
 name: issue
-description: Create a GitHub issue in the task's repository with appropriate labels and a detailed description. Use when the user invokes /issue or asks to open an issue for a task, bug or feature.
+description: Create a GitHub issue in the task's repository with appropriate labels and a detailed description. Supports --pt-br. Use when the user invokes /issue or asks to open an issue for a task, bug or feature.
 disable-model-invocation: false
-argument-hint: "<task description or task-slug>"
+argument-hint: "[--pt-br] <task description or task-slug>"
 allowed-tools: Read, Grep, Glob, Bash(gh issue create:*), Bash(gh issue view:*), Bash(gh issue list:*), Bash(gh label list:*), Bash(gh repo view:*), Bash(gh auth status:*), Bash(git remote:*), Bash(git status:*), Bash(git log:*), Write, Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Bash(gh issue create:*), Bash(gh issue view:*),
 Create a well-written GitHub issue for a task in the repository the task belongs to.
 
 Task received: `$ARGUMENTS`
+
+If the arguments contain `--pt-br`, remove the flag from them and write the issue title and body in Brazilian Portuguese instead of English (headings included). Code, identifiers, file names, commands and `HANDOFF.md` stay in their original form (English).
 
 Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 

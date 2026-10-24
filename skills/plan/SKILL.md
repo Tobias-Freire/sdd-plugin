@@ -1,8 +1,8 @@
 ---
 name: plan
-description: Break a specification into independent, executable parts with checks and tests for each part, producing plan.md and todo.md. Use when the user invokes /plan or asks to plan the implementation of a spec.
+description: Break a specification into independent, executable parts with checks and tests for each part, producing plan.md and todo.md. Supports --pt-br. Use when the user invokes /plan or asks to plan the implementation of a spec.
 disable-model-invocation: false
-argument-hint: "[task-slug or path to spec.md]"
+argument-hint: "[--pt-br] [task-slug or path to spec.md]"
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash(git log:*), Bash(git status:*), Bash(ls:*), Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Write, Edit, Bash(git log:*), Bash(git status:*
 Break the specification into parts that can be built and verified one at a time. Produce two files: `plan.md` (the parts) and `todo.md` (the checklist of checks for each part).
 
 Arguments received: `$ARGUMENTS`
+
+If the arguments contain `--pt-br`, remove the flag from them and write `plan.md` and `todo.md` in Brazilian Portuguese instead of English (headings included). Code, identifiers, file names, commands and `HANDOFF.md` stay in their original form (English).
 
 Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 

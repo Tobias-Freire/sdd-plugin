@@ -1,8 +1,8 @@
 ---
 name: pr
-description: Generate the title and description of a pull request, ask the user to approve them, then open the PR on GitHub and link the related issue if there is one. Use when the user invokes /pr or asks to open a pull request.
+description: Generate the title and description of a pull request, ask the user to approve them, then open the PR on GitHub and link the related issue if there is one. Supports --pt-br. Use when the user invokes /pr or asks to open a pull request.
 disable-model-invocation: false
-argument-hint: "[base-branch] [issue number]"
+argument-hint: "[--pt-br] [base-branch] [issue number]"
 allowed-tools: Read, Grep, Glob, Bash(gh pr create:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh issue view:*), Bash(gh repo view:*), Bash(gh auth status:*), Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git branch:*), Bash(git remote:*), Bash(git rev-parse:*), Bash(git push:*), Write, Edit, Bash(git check-ignore:*)
 ---
 
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Bash(gh pr create:*), Bash(gh pr view:*), Bash(
 Write a pull request title and description from the work on the current branch, get the user's approval, then open the PR on GitHub.
 
 Arguments received: `$ARGUMENTS`
+
+If the arguments contain `--pt-br`, remove the flag from them and write the pull request title and description in Brazilian Portuguese instead of English (headings included). Code, identifiers, file names, commands and `HANDOFF.md` stay in their original form (English).
 
 Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 

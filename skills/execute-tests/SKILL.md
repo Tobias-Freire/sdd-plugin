@@ -1,8 +1,8 @@
 ---
 name: execute-tests
-description: Execute a manual test script on its own using tools such as Playwright and HTTP requests, record the results in test-report.md and optionally post them as a comment on the task's open PR (--add-to-pr) or issue (--add-to-issue). Use when the user invokes /execute-tests or asks to run the manual test script.
+description: Execute a manual test script on its own using tools such as Playwright and HTTP requests, record the results in test-report.md and optionally post them as a comment on the task's open PR (--add-to-pr) or issue (--add-to-issue). Supports --pt-br. Use when the user invokes /execute-tests or asks to run the manual test script.
 disable-model-invocation: false
-argument-hint: "[--add-to-pr | --add-to-issue] [task-slug or path to test-script.md]"
+argument-hint: "[--add-to-pr | --add-to-issue] [--pt-br] [task-slug or path to test-script.md]"
 ---
 
 # /execute-tests
@@ -20,6 +20,7 @@ Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 | *(none)* | Run the tests and write `test-report.md`. |
 | `--add-to-pr` | After writing the report, post the results as a comment on the open PR of this task (see step 6). |
 | `--add-to-issue` | Same, but post the comment on the issue of this task instead of the PR (see step 6). |
+| `--pt-br` | Write `test-report.md` and the PR or issue comment in Brazilian Portuguese instead of English (headings included). Commands, file names, `HANDOFF.md` and the `<!-- sdd-test-report -->` marker stay as they are. |
 
 If both flags are given, post on the PR and on the issue.
 

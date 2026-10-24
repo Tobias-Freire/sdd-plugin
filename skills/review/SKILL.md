@@ -1,8 +1,8 @@
 ---
 name: review
-description: Review everything that was done in a task, looking for improvements, security flaws and optimizations, and list the findings in a table with location, reason, fix and priority. Use when the user invokes /review or asks for a review of the work.
+description: Review everything that was done in a task, looking for improvements, security flaws and optimizations, and list the findings in a table with location, reason, fix and priority. Supports --pt-br. Use when the user invokes /review or asks for a review of the work.
 disable-model-invocation: false
-argument-hint: "[task-slug, branch, PR number or path]"
+argument-hint: "[--pt-br] [task-slug, branch, PR number or path]"
 allowed-tools: Read, Grep, Glob, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git show:*), Bash(git branch:*), Bash(gh pr view:*), Bash(gh pr diff:*), Write, Edit, Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Bash(git diff:*), Bash(git log:*), Bash(git sta
 Review all the work done for a task and report what should be improved. This skill does not change code: it only reports findings (and updates `HANDOFF.md`).
 
 Arguments received: `$ARGUMENTS`
+
+If the arguments contain `--pt-br`, remove the flag from them and write the findings table and every other text of the review in Brazilian Portuguese instead of English (headings included). Code, identifiers, file names, commands and `HANDOFF.md` stay in their original form (English).
 
 Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 

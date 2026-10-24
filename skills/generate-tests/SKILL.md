@@ -1,8 +1,8 @@
 ---
 name: generate-tests
-description: Generate a manual test script (test-script.md) covering every scenario, including edge cases, of a feature or task. Use when the user invokes /generate-tests or asks for a manual test plan or QA script.
+description: Generate a manual test script (test-script.md) covering every scenario, including edge cases, of a feature or task. Supports --pt-br. Use when the user invokes /generate-tests or asks for a manual test plan or QA script.
 disable-model-invocation: false
-argument-hint: "[feature description or task-slug]"
+argument-hint: "[--pt-br] [feature description or task-slug]"
 allowed-tools: Read, Grep, Glob, Write, Edit, Bash(git log:*), Bash(git diff:*), Bash(git status:*), Bash(ls:*), Bash(git check-ignore:*), Bash(git rev-parse:*)
 ---
 
@@ -11,6 +11,8 @@ allowed-tools: Read, Grep, Glob, Write, Edit, Bash(git log:*), Bash(git diff:*),
 Produce a manual test script that covers all scenarios of a feature or task, including edge cases. The script must be precise enough for a person, or for `/execute-tests`, to run it step by step without guessing.
 
 Arguments received: `$ARGUMENTS`
+
+If the arguments contain `--pt-br`, remove the flag from them and write `test-script.md` in Brazilian Portuguese instead of English (headings included). Code, identifiers, file names, commands and `HANDOFF.md` stay in their original form (English).
 
 Before anything else, read `HANDOFF.md` if it exists (see the Handoff section).
 
