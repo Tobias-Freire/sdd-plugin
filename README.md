@@ -116,6 +116,16 @@ Executes the manual test script (`test-script.md`) on its own, using tools such 
 /execute-tests rate-limiting
 ```
 
+### `/review`
+
+Reviews everything that was done in a task, looking for improvements, security flaws, optimizations and test gaps. It first lists the findings in a table with the location, why it needs a fix, the suggested fix and a priority (Low, Medium, High or Urgent), then asks which ones to fix. It is read-only.
+
+```
+/review
+/review rate-limiting
+/review 42
+```
+
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
 > Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
