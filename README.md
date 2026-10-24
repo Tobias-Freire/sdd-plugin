@@ -117,10 +117,16 @@ Generates a manual test script (`test-script.md`) that covers all scenarios of a
 
 ### `/execute-tests`
 
-Executes the manual test script (`test-script.md`) on its own, using tools such as Playwright for UI flows and HTTP requests for APIs. Records pass, fail or blocked for each test case with evidence and reports the results. It only runs against local, development or staging environments.
+Executes the manual test script (`test-script.md`) on its own, using tools such as Playwright for UI flows and HTTP requests for APIs. Records pass, fail or blocked for each test case, with evidence, in `test-report.md`. It only runs against local, development or staging environments.
+
+| Argument | Effect |
+|----------|--------|
+| *(none)* | Runs the tests and writes `test-report.md`. |
+| `--add-to-pr` | Also posts the results as a comment on the task's open PR: first a table listing and describing the tests, then a bullet list with the result of each one and its evidence (text, images or videos). |
 
 ```
 /execute-tests
+/execute-tests --add-to-pr
 /execute-tests rate-limiting
 ```
 
