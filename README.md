@@ -10,8 +10,16 @@ sdd-plugin/
 │   ├── plugin.json         # plugin manifest
 │   └── marketplace.json    # lets the repository be installed as a marketplace
 ├── skills/
-│   └── commit/
-│       └── SKILL.md        # /commit skill
+│   ├── build/SKILL.md           # /build skill
+│   ├── commit/SKILL.md          # /commit skill
+│   ├── execute-tests/SKILL.md   # /execute-tests skill
+│   ├── generate-tests/SKILL.md  # /generate-tests skill
+│   ├── issue/SKILL.md           # /issue skill
+│   ├── plan/SKILL.md            # /plan skill
+│   ├── pr/SKILL.md              # /pr skill
+│   ├── review/SKILL.md          # /review skill
+│   └── spec/SKILL.md            # /spec skill
+├── CLAUDE.md
 └── README.md
 ```
 
@@ -133,6 +141,16 @@ Creates a GitHub issue in the task's repository with appropriate labels (chosen 
 ```
 /issue add rate limiting to the public API
 /issue rate-limiting
+```
+
+### `/pr`
+
+Generates the title and description of a pull request from the branch's commits, diff and task artifacts, asks the user for approval and only then opens the PR on GitHub. If there is a related issue in the context, the PR is linked to it (`Closes #<issue>`). Requires the GitHub CLI (`gh`) authenticated.
+
+```
+/pr
+/pr main
+/pr main 42
 ```
 
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
