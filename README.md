@@ -107,6 +107,15 @@ Generates a manual test script (`test-script.md`) that covers all scenarios of a
 /generate-tests rate-limiting
 ```
 
+### `/execute-tests`
+
+Executes the manual test script (`test-script.md`) on its own, using tools such as Playwright for UI flows and HTTP requests for APIs. Records pass, fail or blocked for each test case with evidence and reports the results. It only runs against local, development or staging environments.
+
+```
+/execute-tests
+/execute-tests rate-limiting
+```
+
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
 > Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
