@@ -65,4 +65,14 @@ Arguments can be combined:
 /commit --with-body --pt-br
 ```
 
+### `/spec`
+
+Generates a detailed specification (`spec.md`) for a task: goals, non-goals, testable requirements, flows, edge cases, technical approach and acceptance criteria.
+
+```
+/spec add rate limiting to the public API
+```
+
+Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
+
 > Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
