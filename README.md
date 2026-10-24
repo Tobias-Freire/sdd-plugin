@@ -82,6 +82,22 @@ Breaks the specification into independent, executable parts. Generates `plan.md`
 /plan rate-limiting
 ```
 
+### `/build`
+
+Builds the task from `spec.md`, `plan.md` and `todo.md`, one part at a time, and waits for the user's validation after each part. When the task involves code, the agent must add at least unit tests for every method and follow clean code principles.
+
+| Argument | Effect |
+|----------|--------|
+| *(none)* | Builds the next unfinished part and waits for validation. |
+| `--validate` | Runs the checks and tests of the current part. |
+| `--all` | Builds all parts and runs all checks and tests without waiting for validation between parts. |
+
+```
+/build
+/build --validate
+/build --all
+```
+
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
 > Plugin skills are namespaced under the plugin name, so the guaranteed form is `/sdd:commit`. Type `/` in Claude Code to see how it appears in your installation.
