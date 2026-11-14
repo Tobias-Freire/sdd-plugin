@@ -9,7 +9,7 @@ All repository content (code, docs, skills, manifests, commit messages) is writt
 ## Shared conventions
 
 - Workflow artifacts (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) live in `.sdd/<task-slug>/`, where `<task-slug>` is a short kebab-case task name. Skills that read or write them must use this location unless the user says otherwise.
-- Every skill is documented in a section of `README.md` in the same change that adds it.
+- Every skill is listed in the skills table of `README.md` (name and path to its `SKILL.md`) in the same change that adds it. Do not describe skills in detail in the README; the details live in the skill's own `SKILL.md`.
 
 ## Workflow and handoff
 
@@ -38,11 +38,11 @@ Bump `version` in `.claude-plugin/plugin.json` whenever skills or agents are add
 
 ## Language flag: `--pt-br`
 
-Every skill that generates text (files, issues, PRs, reports) accepts `--pt-br` and then writes that text in Brazilian Portuguese instead of English. Code, identifiers, file names, commands and `HANDOFF.md` stay in English. Add the flag to `argument-hint`, to the `description` and to the skill's section in `README.md`.
+Every skill that generates text (files, issues, PRs, reports) accepts `--pt-br` and then writes that text in Brazilian Portuguese instead of English. Code, identifiers, file names, commands and `HANDOFF.md` stay in English. Add the flag to `argument-hint` and to the `description`.
 
 ## Skill frontmatter: `disable-model-invocation`
 
 - Set `disable-model-invocation: false` in every new skill. This is the default: agents may invoke the skill on their own when the task calls for it.
 - Use `disable-model-invocation: true` only as an exception, for skills that must run exclusively when the user explicitly invokes them (for example, skills with destructive or hard-to-reverse side effects).
 - Always write the field explicitly, even when it is `false`, so the choice is visible.
-- When a skill is set to `true`, state the reason in the skill's section of `README.md`.
+- When a skill is set to `true`, state the reason in the skill's own `SKILL.md`.
