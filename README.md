@@ -9,6 +9,12 @@ sdd-plugin/
 ├── .claude-plugin/
 │   ├── plugin.json         # plugin manifest
 │   └── marketplace.json    # lets the repository be installed as a marketplace
+├── agents/
+│   ├── architect.md        # Architect agent
+│   ├── builder.md          # Builder agent
+│   ├── documenter.md       # Documenter agent
+│   ├── orchestrator.md     # Orchestrator agent
+│   └── reviewer.md         # Reviewer agent
 ├── skills/
 │   ├── build/SKILL.md           # /build skill
 │   ├── commit/SKILL.md          # /commit skill
@@ -16,6 +22,7 @@ sdd-plugin/
 │   ├── execute-tests/SKILL.md   # /execute-tests skill
 │   ├── generate-tests/SKILL.md  # /generate-tests skill
 │   ├── issue/SKILL.md           # /issue skill
+│   ├── orchestrate/SKILL.md     # /orchestrate skill
 │   ├── plan/SKILL.md            # /plan skill
 │   ├── pr/SKILL.md              # /pr skill
 │   ├── review/SKILL.md          # /review skill
@@ -24,7 +31,7 @@ sdd-plugin/
 └── README.md
 ```
 
-When it makes sense, also add `agents/` (subagents) and `references/` (supporting material shared between skills).
+When it makes sense, also add `references/` (supporting material shared between skills).
 
 ## Installation
 
@@ -194,6 +201,18 @@ Creates or edits documents of any kind (process documentation, code analysis, re
 
 Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
 
+### `/orchestrate`
+
+Runs the workflow for a task by starting the agents (`sdd:documenter`, `sdd:builder`, `sdd:reviewer`, `sdd:architect`) and skills at the right moments, one at a time, with your approval at the gates (spec, plan, each build part). It is the `sdd:orchestrator` agent's role inside a normal session, so `claude --agent` is not needed. Agents run in parallel only if you authorize it.
+
+```
+/orchestrate add rate limiting to the public API
+/orchestrate rate-limiting
+/orchestrate --pt-br
+```
+
+Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
+
 ### `/issue`
 
 Creates a GitHub issue in the task's repository with appropriate labels (chosen from the ones that already exist) and a detailed description. It checks for duplicates first and shows the content for confirmation before creating it. Requires the GitHub CLI (`gh`) authenticated.
@@ -218,6 +237,30 @@ Generates the title and description of a pull request from the branch's commits,
 ```
 
 Add `--pt-br` to write everything this skill generates in Brazilian Portuguese instead of English.
+
+## Agents
+
+Subagents in `agents/`, each with a narrow role. They reuse the skills above (preloaded through the `skills` field) and read and write `HANDOFF.md` like the skills do. They work **one at a time**; parallel runs only happen when the user explicitly authorizes them, because they multiply token use.
+
+| Agent | Role | Writes |
+|-------|------|--------|
+| `sdd:documenter` | Writes and edits specs, plans, guides, analyses and reports. Fixed set of document types; destinations: `.txt`, Markdown, Google Docs or Claude Artifact. | Documents only |
+| `sdd:builder` | Takes the spec, splits it into parts (or follows `plan.md`) and implements one part at a time with unit tests. | Code and tests |
+| `sdd:reviewer` | Reviews documents for gaps and semantic problems, and code for testability, readability, maintainability and modularity. Reports findings in a table. | `HANDOFF.md` only |
+| `sdd:architect` | Reviews documents and code for consistency, scalability, performance and maintainability and recommends changes. Runs on Opus. | `HANDOFF.md` (and optionally `architecture.md`) |
+| `sdd:orchestrator` | Activates the other agents and the skills at the right moments, with user gates (spec, plan, each build part). | `HANDOFF.md` only |
+
+Subagents cannot start other subagents, so the Orchestrator must run as the **main-session agent**:
+
+```bash
+claude --agent sdd:orchestrator
+```
+
+To make it the default for a project, set `"agent": "sdd:orchestrator"` in `.claude/settings.json`. The other four can be requested by name in any session (for example, "use the sdd:reviewer agent on this diff").
+
+`/orchestrate` offers the same coordination without restarting the session.
+
+The Documenter's Google Docs, Google Drive and Claude Docs access requires those connectors to be authorized.
 
 Artifacts of the workflow (`spec.md`, `plan.md`, `todo.md`, `test-script.md`) are saved in `.sdd/<task-slug>/`.
 
